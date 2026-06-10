@@ -36,8 +36,9 @@ both carry charter notes explaining how they stay compliant — preserve that pr
 npm run dev              # Next.js dev server
 npm run build            # production build (SSG)
 npm run lint             # eslint (eslint-config-next)
-npm run refresh:tvl      # refresh data/tvl-snapshot.json from the DefiLlama API
-npm run export:timeline  # regenerate data/control-timeline.json from a running Sieve indexer
+npm run refresh:tvl         # refresh data/tvl-snapshot.json from the DefiLlama API
+npm run refresh:governance  # refresh data/governance-snapshot.json from the Safe Transaction Service
+npm run export:timeline     # regenerate data/control-timeline.json from a running Sieve indexer
 ```
 
 There is no test suite. Verify changes with `npm run build` (catches type errors; `strict` is on)
@@ -54,8 +55,15 @@ time. If an upstream source is down, the last committed snapshot still ships. Fo
 for any new external data — never fetch at request time.
 
 - `data/tvl-snapshot.json` ← `scripts/refresh-tvl.mjs` (DefiLlama). Read via `lib/tvl.ts`.
+- `data/governance-snapshot.json` ← `scripts/refresh-governance.mjs` (Safe Transaction Service —
+  live multisig threshold/owner counts for protocol-controlling Safes). Read via
+  `lib/governance-snapshot.ts`; backs the `governance-glance` control strip.
 - `data/control-timeline.json` ← `scripts/export-control-timeline.mjs` (Sieve GraphQL). Read via
   `lib/control-timeline.ts`. `scripts/` is excluded from tsconfig and runs as plain `.mjs`.
+
+Other `lib/` helpers: `lib/scan.ts` (`coverageScannedAt` timestamp), `lib/status.ts` (`SITE_STATUS`
+pipeline health for the status bar — NOT a feed/protocol judgement, per Charter §1), `lib/format.ts`
+(USD/price formatting).
 
 ### Data layer (`lib/data/`) — the source of truth
 
@@ -83,7 +91,8 @@ accurate when editing, and cite the source for corrections.
   (`components/coverage-views.tsx`), all sharing one filter/sort state.
 - `/protocol/[slug]` — per-protocol detail; tabbed (`components/protocol-tabs.tsx`): AI review,
   feeds, governance, control timeline, incidents, audits. Empty sections drop their tab.
-- `/feed/[slug]` — per-feed detail. `/feeds`, `/explore`, `/methodology`, `/faq` — supporting pages.
+- `/feed/[slug]` — per-feed detail. `/feeds`, `/explore`, `/methodology`, `/faq`, `/about` —
+  supporting pages.
 
 Detail routes use `generateStaticParams`. The home page and `/explore` both build their data via
 `buildExploreData()` in `lib/explore-data.ts` so they stay in lockstep.
@@ -188,6 +197,6 @@ called by the site — it feeds `export:timeline` only.
 ## Governance docs
 
 `CHARTER.md` (binding constraints), `DISCLOSURES.md` (maintainer conflict-of-interest disclosures,
-required by Charter §3 — update when a relationship begins/changes/ends), and `README.md`. When
-changing a feed/protocol that touches a disclosed relationship, check `DISCLOSURES.md` stays
-accurate.
+required by Charter §3 — update when a relationship begins/changes/ends), `README.md`, and
+`docs/ROADMAP.md` (public roadmap of high-confidence extensions). When changing a feed/protocol
+that touches a disclosed relationship, check `DISCLOSURES.md` stays accurate.
