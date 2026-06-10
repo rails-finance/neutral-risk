@@ -63,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </span>
             </Link>
             {/* Assets removed from the UI — asset coverage is an out-of-scope future milestone
-                (see proposal/FUTURE-MILESTONES.md §2–§3), not core RFP scope. The lib/data/assets*
+                (see docs/ROADMAP.md §1), not core RFP scope. The lib/data/assets*
                 data files are retained to back that future milestone. */}
             <div className="flex items-center gap-2">
               <SiteNav />

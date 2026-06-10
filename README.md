@@ -37,8 +37,8 @@ important. The aggregation is the value. We add no synthesis, no editorial judge
   living *"what changed"* investigative note (who / when / why / what) when the underlying data
   moves. It **never produces a score, grade, or ranking** — an explainer of facts, not a judge,
   cordoned off as a clearly-labelled, non-authoritative layer (charter-safe by construction).
-  Currently an illustrative mockup; the live pipeline and its roadmap are in
-  [`proposal/FUTURE-MILESTONES.md`](./proposal/FUTURE-MILESTONES.md) §1.
+  Currently an illustrative mockup; the evaluation harness that keeps it neutral, and the rest of
+  its roadmap, is in [`docs/ROADMAP.md`](./docs/ROADMAP.md) §2.
 - A **methodology page** stating exactly what the project does and does not do, the full
   feed registry, and the data-provenance tags.
 - A **plain-language FAQ** answering what a DeFi risk feed is, what coverage means, and why
