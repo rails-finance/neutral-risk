@@ -363,7 +363,7 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
 
   return (
     <div>
-      <Link href="/" className="mb-5 inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
+      <Link href="/coverage" className="mb-5 inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
         ← All protocols
       </Link>
 

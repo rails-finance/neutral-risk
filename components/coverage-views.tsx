@@ -8,7 +8,7 @@ import { CoverageMap, type MapPoint } from "@/components/coverage-quadrant";
 import { GuidedExplorer, type ExploreData } from "@/components/guided-explorer";
 import { List, LayoutGrid, ScatterChart, Signpost, Eye, ChevronDown, type LucideIcon } from "lucide-react";
 
-type ViewKey = "list" | "matrix" | "map" | "explore";
+export type ViewKey = "list" | "matrix" | "map" | "explore";
 
 /** Default direction when first sorting by a column: magnitudes descend (biggest first), names
  *  ascend (A→Z). Re-clicking the active column flips it. */
@@ -90,6 +90,7 @@ export function CoverageViews({
   medianReporting,
   exploreData,
   tvlUpdated,
+  initialView = "list",
 }: {
   rows: MatrixRow[];
   feeds: MatrixFeed[];
@@ -97,12 +98,25 @@ export function CoverageViews({
   exploreData: ExploreData;
   /** Pre-formatted TVL snapshot date, e.g. "Jun 3, 2026". Shown only under the TVL-bearing views. */
   tvlUpdated: string;
+  /** Which view to open on, set from the URL path (/coverage/matrix → "matrix"). Defaults to list. */
+  initialView?: ViewKey;
 }) {
   const [cat, setCat] = useState<Category | "All">("All");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("tvl");
   const [dir, setDir] = useState<SortDir>("desc");
-  const [view, setView] = useState<ViewKey>("list");
+  const [view, setView] = useState<ViewKey>(initialView);
+
+  // Switching view also rewrites the URL (/coverage, /coverage/matrix, /coverage/map,
+  // /coverage/explore) so every view is deep-linkable and shareable. We use the raw history API
+  // rather than the Next router on purpose: the target is the same dynamic route, so this is a
+  // pure URL swap with no re-render or data refetch, which keeps the current filter/sort intact.
+  const selectView = (k: ViewKey) => {
+    setView(k);
+    if (typeof window === "undefined") return;
+    const path = k === "list" ? "/coverage" : `/coverage/${k}`;
+    window.history.replaceState(window.history.state, "", path);
+  };
   // Shared TVL/Feeds column visibility — one "eye" menu drives both the list and matrix. Shown by
   // default (the list's primary columns); can be hidden in either view.
   const [cols, setCols] = useState<Record<ColKey, boolean>>({ tvl: true, feeds: true });
@@ -163,11 +177,11 @@ export function CoverageViews({
           { k: "list", label: "List", Icon: List },
           { k: "matrix", label: "Matrix", Icon: LayoutGrid },
           { k: "map", label: "Map", Icon: ScatterChart },
-          { k: "explore", label: "Explorer", Icon: Signpost },
+          { k: "explore", label: "Explore", Icon: Signpost },
         ] as { k: ViewKey; label: string; Icon: LucideIcon }[]).map(({ k, label, Icon }) => (
           <button
             key={k}
-            onClick={() => setView(k)}
+            onClick={() => selectView(k)}
             aria-pressed={view === k}
             className={`flex cursor-pointer items-center justify-center gap-2.5 rounded-xl border px-4 py-4 text-sm font-bold uppercase tracking-wide transition-colors sm:py-5 sm:text-base ${
               view === k

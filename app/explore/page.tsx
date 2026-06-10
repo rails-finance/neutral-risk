@@ -1,28 +1,8 @@
-import type { Metadata } from "next";
-import { GuidedExplorer } from "@/components/guided-explorer";
-import { buildExploreData } from "@/lib/explore-data";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Guided explorer · Neutral Risk",
-  description:
-    "Answer a few questions to find the verbatim feed data that matters to you. The explorer routes — it never scores.",
-};
-
-export default function ExplorePage() {
-  const data = buildExploreData();
-
-  return (
-    <div>
-      <section className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Guided explorer</h1>
-        <p className="mt-2 max-w-3xl text-sm leading-relaxed text-rr-500">
-          Not sure where to start? Answer a couple of questions and we&rsquo;ll point you to
-          the feeds and protocols that match — then you read what each feed says, verbatim.
-          This tool only navigates; it produces no score or recommendation of its own.
-        </p>
-      </section>
-
-      <GuidedExplorer data={data} />
-    </div>
-  );
+// The guided explorer is now the fourth coverage view, at /coverage/explore (it renders inline as
+// a peer of List / Matrix / Map). This standalone route is kept only as a stable redirect so any
+// existing /explore link still resolves.
+export default function ExploreRedirect() {
+  redirect("/coverage/explore");
 }

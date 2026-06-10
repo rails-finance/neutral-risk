@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 export interface ProtocolTab {
   id: string;
@@ -18,6 +18,24 @@ export interface ProtocolTab {
 export function ProtocolTabs({ tabs, defaultId }: { tabs: ProtocolTab[]; defaultId?: string }) {
   const [active, setActive] = useState(defaultId ?? tabs[0]?.id);
 
+  // Deep-linkable tabs: honour a #tab-id in the URL on load (e.g. /protocol/aave-v3#verify) and
+  // keep the hash in step as the reader switches tabs, so the proposal and others can link straight
+  // to a specific section. The mobile layout stacks every section, so this only drives the desktop
+  // tab bar; the panels all ship in the static HTML regardless.
+  useEffect(() => {
+    const fromHash = window.location.hash.replace(/^#/, "");
+    if (fromHash && tabs.some((t) => t.id === fromHash)) setActive(fromHash);
+    // Run once on mount; tabs are stable for the page's lifetime.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const selectTab = (id: string) => {
+    setActive(id);
+    if (typeof window !== "undefined") {
+      window.history.replaceState(window.history.state, "", `#${id}`);
+    }
+  };
+
   return (
     <div className="mt-6">
       {/* Tab bar — desktop only. */}
@@ -30,7 +48,7 @@ export function ProtocolTabs({ tabs, defaultId }: { tabs: ProtocolTab[]; default
               role="tab"
               type="button"
               aria-selected={on}
-              onClick={() => setActive(t.id)}
+              onClick={() => selectTab(t.id)}
               className={`-mb-px cursor-pointer border-b-2 px-4 py-2.5 text-xs font-semibold uppercase tracking-wide transition-colors ${
                 on
                   ? "border-rr-100 text-rr-50"

@@ -35,7 +35,7 @@ function Hamburger({ active }: { active: boolean }) {
  *  deliberately kept separate from the data colour grammar — coverage/category/status/brand — so it
  *  never reads as a risk or coverage signal). Icons + tile colours are nav decoration only. */
 const NAV: { href: string; label: string; icon: LucideIcon; tile: string }[] = [
-  { href: "/", label: "Coverage", icon: LayoutGrid, tile: "bg-blue-600" },
+  { href: "/coverage", label: "Coverage", icon: LayoutGrid, tile: "bg-blue-600" },
   { href: "/feeds", label: "Feed directory", icon: Rss, tile: "bg-teal-600" },
   { href: "/methodology", label: "Methodology", icon: BookOpen, tile: "bg-violet-600" },
   { href: "/faq", label: "FAQ", icon: HelpCircle, tile: "bg-amber-600" },

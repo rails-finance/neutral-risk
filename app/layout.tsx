@@ -49,7 +49,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <header className="bg-rr-950">
           <div className="mx-auto flex max-w-[1400px] items-center justify-between px-6 py-4 lg:px-8">
-            <Link href="/" className="flex items-center gap-3">
+            <Link href="/coverage" className="flex items-center gap-3">
               <BrandMark className="h-11 w-11 shrink-0" />
               {/* Brand + strapline. Inline (name · divider · strapline) on sm+; stacked on mobile. */}
               <span className="flex flex-col sm:flex-row sm:items-center sm:gap-3">
