@@ -1,0 +1,49 @@
+{
+  "fetchedAt": "2026-06-10T07:16:57.941Z",
+  "source": "https://safe-transaction-mainnet.safe.global",
+  "note": "Live multisig threshold/owner counts for protocol-controlling Safes, fetched from the Safe Transaction Service and read at build time. Mirrors the TVL snapshot pattern: the site stays static (last snapshot ships if the API is down), so governance figures are refreshable without a runtime dependency. Seeded with Safes already cited in lib/data/protocols.ts; expand by adding entries (key = checksummed Safe address). Refresh with `npm run refresh:governance`.",
+  "safes": {
+    "0xA7D5DDc1b8557914F158076b228AA91eF613f1D5": {
+      "protocol": "gearbox",
+      "label": "Gearbox technical multisig",
+      "threshold": 6,
+      "owners": 12
+    },
+    "0x10A19e7eE7d7F8a52822f6817de8ea18204F2e4f": {
+      "protocol": "balancer-v2",
+      "label": "Balancer DAO multisig",
+      "threshold": 6,
+      "owners": 11
+    },
+    "0xcA771eda0c70aA7d053aB1B25004559B918FE662": {
+      "protocol": "cow-swap",
+      "label": "CoW DAO Safe",
+      "threshold": 3,
+      "owners": 5
+    },
+    "0xcBa28b38103307Ec8dA98377ffF9816C164f9AFa": {
+      "protocol": "morpho",
+      "label": "Morpho DAO multisig",
+      "threshold": 5,
+      "owners": 9
+    },
+    "0xFEB4acf3df3cDEA7399794D0869ef76A6EfAff52": {
+      "protocol": "yearn",
+      "label": "Yearn yChad multisig",
+      "threshold": 6,
+      "owners": 9
+    },
+    "0x8119EC16F0573B7dAc7C0CB94EB504FB32456ee1": {
+      "protocol": "pendle",
+      "label": "Pendle governance multisig",
+      "threshold": 3,
+      "owners": 5
+    },
+    "0x7951c7ef839e26F63DA87a42C9a87986507f1c07": {
+      "protocol": "1inch",
+      "label": "1inch DAO treasury Safe",
+      "threshold": 7,
+      "owners": 12
+    }
+  }
+}

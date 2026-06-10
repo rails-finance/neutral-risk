@@ -1,0 +1,237 @@
+@import "tailwindcss";
+
+@theme {
+  /* Two typefaces, with a methodology: Inter for all prose/UI, JetBrains Mono for numerics only
+     (TVL, counts, prices, dates, hashes). Loaded + self-hosted by next/font in app/layout.tsx,
+     which sets --font-inter / --font-jetbrains on <html>; these tokens add the fallback stacks. */
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  /* Type scale — lifted a notch off the Tailwind defaults so the content tiers read comfortably and
+     uniformly (the page used to drop real content to 12px, which read small). `text-sm` is the BODY
+     tier (15px) — prose, card descriptions, table cells; `text-xs` is FINE PRINT ONLY (13px) —
+     timestamps, counts, provenance, footnotes. Content paragraphs must use `text-sm`, never
+     `text-xs`. Larger steps (text-base/lg/2xl) and the label utilities (.eyebrow/.label 11px,
+     .section-title 13px) are unchanged. Line-heights inherit Tailwind's unitless ratios, so they
+     scale with these sizes automatically. */
+  --text-xs: 0.8125rem; /* 13px — fine print */
+  --text-sm: 0.9375rem; /* 15px — body / content */
+
+  /* Registry palette (rr = Risk Registry) — 50 lightest, 950 darkest. These are the DARK-theme
+     values (the default). A deep, near-black cool-slate scale; rr-600 is the dark border tone.
+     The light theme inverts this ramp under html[data-theme="light"] below, so components that
+     reference rr-* (text-rr-50, bg-rr-900, border-rr-600 …) recolour automatically per theme. */
+  --color-rr-50: rgb(248 250 252);
+  --color-rr-100: rgb(238 242 248);
+  --color-rr-200: rgb(222 228 238);
+  --color-rr-300: rgb(200 210 224);
+  --color-rr-400: rgb(145 160 182);
+  --color-rr-500: rgb(96 110 134);
+  --color-rr-600: rgb(44 56 78);
+  --color-rr-700: rgb(33 43 63);
+  --color-rr-800: rgb(23 31 48);
+  --color-rr-850: rgb(16 22 38);
+  --color-rr-900: rgb(10 14 27);
+  --color-rr-950: rgb(5 8 17);
+
+  /* Coverage semantics — a single-hue VALUE RAMP, not a traffic light: covered and partial share
+     ONE fuchsia hue (fuchsia-500); partial is distinguished by the diagonal HATCH (cov-hatch), not a
+     colour step. fuchsia-500 is a mid-tone that holds its weight on both the dark and the white page,
+     so cov-covered is the SAME in both themes (no per-theme swap). absent = muted slate. cov-partial
+     is now used only as a TEXT/chip colour for partial counts, where per-theme tuning still helps, so
+     it alone keeps the lighter-on-dark / deeper-on-light split. Deliberately neutral (covered is NOT
+     "good", partial is NOT "risk") per CHARTER §1, and kept in the fuchsia region so the category
+     palette (sky/teal/amber/green/orange) and the brand blue never collide with it. */
+  --color-cov-covered: rgb(217 70 239); /* fuchsia-500 — one tone, both themes */
+  --color-cov-partial: rgb(232 121 249); /* fuchsia-400 — partial TEXT only, readable on dark */
+  --color-cov-none: rgb(64 76 96); /* muted slate (dark) */
+
+  /* Status semantics — a green/amber/red health triad, distinct from coverage. Reports the
+     operational health of OUR data pipeline plus neutral capability/disclosure signals
+     (machine-readability, feed independence, price direction) — never a feed risk judgement
+     (CHARTER.md §1). ok = green, warn = amber, down = red. Constant across themes. */
+  --color-status-ok: rgb(0 180 66); /* #00b442 green */
+  --color-status-warn: rgb(255 166 0); /* #ffa600 orange */
+  --color-status-down: rgb(248 113 113); /* red-400 */
+
+  /* Brand — the single interactive accent, now blue. Used for the mark, links, the "selected"
+     state, primary buttons, and the blue border-hover that marks a control as interactive. */
+  --color-brand: rgb(59 130 246); /* blue-500 */
+  --color-brand-bright: rgb(96 165 250); /* blue-400 (hover) */
+  --color-brand-dim: rgb(37 99 235); /* blue-600 (pressed) */
+}
+
+:root {
+  --background: rgb(10 14 27); /* rr-900 */
+  --foreground: rgb(248 250 252); /* rr-50 */
+  --panel: rgb(23 31 48); /* rr-800 */
+  --card: rgb(16 22 38); /* rr-850 */
+  --border: rgb(44 56 78); /* rr-600 */
+  --muted: rgb(96 110 134); /* rr-500 */
+}
+
+/* Light theme — invert the rr-* ramp (50 = strongest/darkest text, 900 = white background) and
+   flip the semantic tokens. cov-covered stays the SAME mid fuchsia in both themes; only cov-partial
+   (partial-count TEXT) takes a deeper step on white. Status colours stay; surfaces go slate-on-white. */
+html[data-theme="light"] {
+  --color-rr-50: rgb(15 23 42);
+  --color-rr-100: rgb(30 41 59);
+  --color-rr-200: rgb(51 65 85);
+  --color-rr-300: rgb(71 85 105);
+  --color-rr-400: rgb(100 116 139);
+  --color-rr-500: rgb(120 134 156);
+  --color-rr-600: rgb(203 213 225);
+  --color-rr-700: rgb(226 232 240);
+  --color-rr-800: rgb(241 245 249);
+  --color-rr-850: rgb(248 250 252);
+  --color-rr-900: rgb(255 255 255);
+  --color-rr-950: rgb(255 255 255);
+
+  --color-cov-covered: rgb(217 70 239); /* fuchsia-500 — same tone as dark (no swap) */
+  --color-cov-partial: rgb(192 38 211); /* fuchsia-600 — partial TEXT only, readable on white */
+  --color-cov-none: rgb(203 213 225); /* light gray for "absent" */
+
+  --background: rgb(255 255 255);
+  --foreground: rgb(15 23 42);
+  --panel: rgb(241 245 249);
+  --card: rgb(248 250 252);
+  --border: rgb(203 213 225);
+  --muted: rgb(120 134 156);
+}
+
+/* These base resets MUST live in @layer base. Tailwind v4 puts utilities in @layer utilities, and
+   unlayered CSS beats any layer regardless of specificity — so an unlayered `* { border-color }` or
+   `a { color }` would silently override every border-colour and text-colour utility (incl.
+   hover:border-brand and all link colours). Keeping them layered lets utilities win as intended. */
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    background: var(--background);
+  }
+
+  html[data-theme="dark"] {
+    color-scheme: dark;
+  }
+
+  html[data-theme="light"] {
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  ::selection {
+    background: rgba(59, 130, 246, 0.28); /* brand blue */
+  }
+}
+
+/* ─── Typography primitives ───────────────────────────────────────────────────
+   The site uses ONE uppercase-label grammar in two sizes. Colour is left to a
+   utility (text-rr-500, text-cov-covered …) since it carries meaning per use.
+
+   .eyebrow      — micro-label: badges, chips, table headers, metadata, legends.
+   .section-title — uppercase section heading, one step up from the eyebrow.     */
+@utility eyebrow {
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1.1;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Normal-case sibling of .eyebrow — same micro-label size/weight, no uppercase and near-zero
+   tracking. For label spots where the uppercase grammar read as too shouty (the coverage table's
+   headers/metadata/legend and the top status bar). */
+@utility label {
+  font-size: 0.6875rem; /* 11px */
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+@utility section-title {
+  font-size: 0.8125rem; /* 13px */
+  line-height: 1.2;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Partial-coverage hatch — solid fuchsia stripes over a semi-opaque fuchsia wash (of the SAME hue),
+   so "partial" reads as distinct from solid "covered" by TEXTURE alone, not a colour step: both use
+   the cov-covered hue, partial is simply hatched. The gaps are a translucent fuchsia rather than the
+   page colour, so the swatch stays fuchsia end-to-end. Applied to matrix cells, the coverage bar's
+   partial segment, legends, and the feed-card coverage bars. */
+@utility cov-hatch {
+  background-color: color-mix(in srgb, var(--color-cov-covered) 38%, transparent);
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-cov-covered) 0,
+    var(--color-cov-covered) 2px,
+    transparent 2px,
+    transparent 4.5px
+  );
+}
+
+/* Nav-menu entrance — a small spring-ish pop for the desktop dropdown (replaces framer-motion;
+   keeps the bundle dep-free and IPFS-publishable). Anchored top-right under the hamburger. */
+@keyframes menu-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+.menu-pop {
+  animation: menu-pop 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: top right;
+}
+
+/* One consistent keyboard-focus signal across every interactive element. Uses
+   :focus-visible so it appears for keyboard/AT users but not on mouse click. */
+*:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Frosted-glass material for floating controls. The edge highlight is a featherweight inset top
+   shadow — not a border — so controls read as glass while staying borderless. */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.glass-strong {
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 10px 34px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="light"] .glass,
+html[data-theme="light"] .glass-strong {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+html[data-theme="light"] .glass-strong {
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),
+    0 10px 34px rgba(15, 23, 42, 0.12);
+}

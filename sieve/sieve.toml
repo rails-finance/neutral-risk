@@ -1,0 +1,111 @@
+# Sieve config — DeFi Risk Registry "verification layer" indexer
+# =============================================================================
+# Indexes the on-chain CONTROL PLANE of the demo's lead protocol — upgrades,
+# governance executions, timelock/guardian actions — so the registry's control
+# timeline is rendered from chain truth, not asserted. Sieve runs its own devp2p
+# node (no RPC provider), backfills from each start_block, and exposes GraphQL.
+#
+# SCOPE: single protocol (Aave v3) for the initial demo. The other flagships
+# (Compound, Lido, Spark, Curve, Uniswap, Morpho, Liquity) and the Phase-B TVL
+# cross-check were removed for now — reinstate from git history when widening.
+#
+# FORMAT: this is the schema Sieve actually parses (validated with `sieve
+# inspect`) — each contract carries an `abi` path + `[[contracts.events]]`
+# blocks (name -> generated table). ABIs live in abis/, fetched via
+# `sieve add-contract` (which auto-resolves proxies to their implementation).
+# The events below are PRUNED to the control plane; the full event sets are in
+# the fetched ABIs. start_blocks are creation blocks, Etherscan-verified
+# (getcontractcreation) 2026-06-04.
+#
+# NOTE: aave_v3_pool's abi is a minimal proxy ABI (just `Upgraded`). The fetched
+# implementation ABI (PoolInstance: Borrow/Supply/...) has no Upgraded event —
+# that is emitted by the proxy. The impl ABI is the one to re-fetch for Phase B.
+# =============================================================================
+
+[database]
+url = "postgres://postgres:sieve@localhost:5432/sieve"
+
+[server]
+port = 4000
+
+# =============================================================================
+# AAVE v3  — upgradeable; control flows Governance -> PayloadsController ->
+# Executor; core Pool proxy emits Upgraded(address).
+# =============================================================================
+[[contracts]]
+name = "aave_governance_v3"
+address = "0x9AEE0B04504CeF83A65AC3f0e838D0593BCb2BC7"
+abi = "abis/aave_governance_v3.json"
+start_block = 18119225
+
+[[contracts.events]]
+name = "ProposalCreated"
+table = "aave_governance_v3_proposal_created"
+[[contracts.events]]
+name = "ProposalQueued"
+table = "aave_governance_v3_proposal_queued"
+[[contracts.events]]
+name = "ProposalExecuted"
+table = "aave_governance_v3_proposal_executed"
+[[contracts.events]]
+name = "ProposalCanceled"
+table = "aave_governance_v3_proposal_canceled"
+
+[[contracts]]
+name = "aave_payloads_controller"
+address = "0xdAbad81aF85554E9ae636395611C58F7eC1aAEc5"
+abi = "abis/aave_payloads_controller.json"
+start_block = 18119740
+
+[[contracts.events]]
+name = "PayloadCreated"
+table = "aave_payloads_controller_payload_created"
+[[contracts.events]]
+name = "PayloadQueued"
+table = "aave_payloads_controller_payload_queued"
+[[contracts.events]]
+name = "PayloadExecuted"
+table = "aave_payloads_controller_payload_executed"
+
+[[contracts]]
+name = "aave_executor_short" # also the protocol ACL_ADMIN
+address = "0x5300A1a15135EA4dc7aD5a167152C01EFc9b192A"
+abi = "abis/aave_executor_short.json"
+start_block = 18119610
+
+[[contracts.events]]
+name = "ExecutedAction"
+table = "aave_executor_short_executed_action"
+
+[[contracts]]
+name = "aave_executor_long"
+address = "0x17Dd33Ed0e3dD2a80E37489B8A63063161BE6957"
+abi = "abis/aave_executor_long.json"
+start_block = 18119717
+
+[[contracts.events]]
+name = "ExecutedAction"
+table = "aave_executor_long_executed_action"
+
+[[contracts]]
+name = "aave_v3_pool" # core proxy — implementation swaps (minimal proxy ABI: Upgraded)
+address = "0x87870Bca3F3fD6335C3F4ce8392D69350B4fA4E2"
+abi = "abis/aave_v3_pool.json"
+start_block = 16291127
+
+[[contracts.events]]
+name = "Upgraded"
+table = "aave_v3_pool_upgraded"
+
+[[contracts]]
+name = "aave_acl_manager" # role grants/revokes (PoolAdmin, RiskAdmin, EmergencyAdmin)
+address = "0xc2aaCf6553D20d1e9d78E365AAba8032af9c85b0"
+abi = "abis/aave_acl_manager.json"
+start_block = 16291117
+
+[[contracts.events]]
+name = "RoleGranted"
+table = "aave_acl_manager_role_granted"
+[[contracts.events]]
+name = "RoleRevoked"
+table = "aave_acl_manager_role_revoked"

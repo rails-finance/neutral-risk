@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Neutral Risk — two overlapping rounded squares (intersecting-squares mark) -->
+  <rect width="32" height="32" rx="8" fill="rgb(10 14 27)"/>
+  <rect x="5" y="5" width="15" height="15" rx="5" fill="rgb(59 130 246)"/>
+  <rect x="12" y="12" width="15" height="15" rx="5" fill="rgb(51 65 85)" fill-opacity="0.85"/>
+</svg>

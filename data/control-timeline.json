@@ -1,0 +1,53 @@
+{
+  "fetchedAt": "2026-06-04T00:00:00.000Z",
+  "source": "Immutable-protocol facts seeded as verified; upgradeable protocols are populated from on-chain events via Sieve (see sieve/README.md). Refresh with `npm run export:timeline`.",
+  "timelines": {
+    "liquity-v1": [
+      {
+        "date": "at deploy",
+        "action": "Contracts deployed (immutable)",
+        "detail": "Liquity V1 core contracts are immutable with no admin key or human governance. No upgrades or admin actions are possible after deploy — an empty timeline here is itself the signal.",
+        "provenance": "verified"
+      }
+    ],
+    "liquity-v2": [
+      {
+        "date": "at deploy",
+        "action": "Contracts deployed (immutable)",
+        "detail": "Liquity V2 (BOLD) core contracts are immutable. LQTY-staked governance routes PIL liquidity incentives only, never protocol control — so there are no upgrade or admin actions to record.",
+        "provenance": "verified"
+      }
+    ],
+    "morpho": [
+      {
+        "date": "at deploy",
+        "action": "Immutable core (no proxy)",
+        "detail": "Morpho Blue is a directly-deployed singleton — no proxy, no implementation slot, no upgrade path. Governance can only whitelist IRMs/LLTVs (additive, irreversible) and set a capped fee; it cannot upgrade, pause, or alter existing markets.",
+        "provenance": "verified"
+      }
+    ],
+    "uniswap-v3": [
+      {
+        "date": "at deploy",
+        "action": "Non-upgradeable core",
+        "detail": "Uniswap v3 core (factory + pools) is non-upgradeable. Governance's only core power is the factory owner role (enable fee tiers / transfer owner); it cannot change swap or AMM logic.",
+        "provenance": "verified"
+      }
+    ],
+    "uniswap-v4": [
+      {
+        "date": "at deploy",
+        "action": "Non-upgradeable singleton",
+        "detail": "Uniswap v4's singleton PoolManager is non-upgradeable. Governance's only core power is the protocol-fee switch; per-pool hooks are deployed permissionlessly and are not protocol-level upgrades.",
+        "provenance": "verified"
+      }
+    ],
+    "aave-v3": [],
+    "aave-v4": [],
+    "compound-v3": [],
+    "compound-v2": [],
+    "lido": [],
+    "spark": [],
+    "curve": []
+  }
+}

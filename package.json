@@ -1,0 +1,33 @@
+{
+  "name": "neutral-risk",
+  "version": "0.1.0",
+  "private": false,
+  "license": "AGPL-3.0-or-later",
+  "description": "A neutral, open aggregator of what DeFi risk feeds say about Ethereum protocols — side by side, verbatim, no composite scoring.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "refresh:tvl": "node scripts/refresh-tvl.mjs",
+    "refresh:governance": "node scripts/refresh-governance.mjs",
+    "export:timeline": "node scripts/export-control-timeline.mjs"
+  },
+  "dependencies": {
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.566.0",
+    "next": "^16.1.6",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.0.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "^16.1.6",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.0"
+  }
+}

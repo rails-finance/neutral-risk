@@ -1,0 +1,32 @@
+{
+  "fetchedAt": "2026-06-03T07:02:04.137Z",
+  "source": "https://api.llama.fi/protocols",
+  "note": "TVL in USD. Aggregators (CoW, 1inch, 0x/Matcha) carry ~0 TVL by design; production surfaces 24h volume for these via DefiLlama /overview/dexs. Refresh with `npm run refresh:tvl`.",
+  "tvl": {
+    "lido": 16615677456,
+    "aave-v3": 12386983766,
+    "aave-v4": 84360568,
+    "morpho-blue": 6833477047,
+    "sparklend": 3406271110,
+    "curve-dex": 1540613800,
+    "uniswap-v3": 1534045629,
+    "pendle": 1341933477,
+    "compound-v3": 1096682777,
+    "uniswap-v4": 633889833,
+    "compound-v2": 88817464,
+    "rocket-pool": 891660318,
+    "fluid-lending": 638694247,
+    "euler-v2": 266357679,
+    "yearn-finance": 168536032,
+    "liquity-v2": 72493653,
+    "liquity-v1": 139210853,
+    "balancer-v3": 82769395,
+    "balancer-v2": 28081442,
+    "gearbox": 19753227,
+    "mellow": 2714,
+    "cowswap": 0,
+    "1inch": 2637892,
+    "0x": 0,
+    "matcha": 0
+  }
+}
