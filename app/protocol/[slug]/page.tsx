@@ -50,74 +50,6 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
       content: <AiCard ai={ai} protocolName={p.name} />,
     },
     {
-      id: "lens",
-      label: "How feeds see it",
-      content: (
-        <>
-          {/* Coverage summary */}
-          <div className="flex flex-wrap items-center gap-4 rounded-xl bg-rr-850 px-5 py-4 text-sm">
-            <span className="text-rr-500">Feed coverage</span>
-            <span className="font-mono">
-              <span className="text-cov-covered">{counts.covered} covered</span>
-              <span className="text-rr-500"> · </span>
-              <span className="text-cov-partial">{counts.partial} partial</span>
-              <span className="text-rr-500"> · {counts.total - counts.covered - counts.partial} not yet covered</span>
-              <span className="text-rr-500"> of {counts.total}</span>
-            </span>
-          </div>
-
-          {/* How the feeds see it — methodology-lens spread (neutral, fact-only) */}
-          <section className="mt-6">
-            <div className="rounded-xl bg-rr-850 p-5">
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-                {LENS_TYPES.map((t) => {
-                  const v = spread.byType[t];
-                  const n = v.covered + v.partial;
-                  return (
-                    <div key={t} className={`rounded-lg bg-rr-800 px-4 py-3 ${n === 0 ? "opacity-40" : ""}`}>
-                      <div className="eyebrow text-rr-500">{t}</div>
-                      <div className="mt-0.5 font-mono text-sm">
-                        {n === 0 ? (
-                          <span className="text-rr-500">—</span>
-                        ) : (
-                          <>
-                            <span className="text-cov-covered">{v.covered}</span>
-                            <span className="text-rr-500"> / </span>
-                            <span className="text-cov-partial">{v.partial}</span>
-                          </>
-                        )}
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              <p className="mt-3 text-sm leading-relaxed text-rr-500">
-                {spread.reporting === 0 ? (
-                  <>No feed in the registry reports on {p.name} yet.</>
-                ) : (
-                  <>
-                    Seen through <span className="text-rr-200">{spread.lensCount} of 4</span> methodology lenses
-                    ({spread.lenses.join(", ").toLowerCase()}).{" "}
-                    {spread.reporting > 0 && (
-                      <>
-                        Of {spread.reporting} feeds reporting,{" "}
-                        <span className="text-rr-200">{Math.round((1 - spread.partialShare) * 100)}%</span> assess fully and{" "}
-                        <span className="text-rr-200">{Math.round(spread.partialShare * 100)}%</span> only partially —{" "}
-                        {spread.partialShare >= 0.5
-                          ? "feeds vary in how fully they can assess it."
-                          : "broad agreement on assessability."}
-                      </>
-                    )}{" "}
-                    A neutral view of who is looking and how — not a risk judgement.
-                  </>
-                )}
-              </p>
-            </div>
-          </section>
-        </>
-      ),
-    },
-    {
       id: "governance",
       label: "Governance",
       content: (
@@ -191,13 +123,62 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
       id: "feeds",
       label: "Feeds",
       content: (
-        /* Risk Intelligence Feeds */
+        /* Risk Intelligence Feeds — opens with the aggregate (coverage + methodology-lens spread,
+           the former "How feeds see it" tab) then the verbatim per-feed cards. Aggregate is a
+           neutral view of who is looking and how, not a risk judgement (CHARTER.md §1). */
         <section>
-          <p className="mb-4 text-sm text-rr-500">
-            {counts.covered + counts.partial} of {counts.total} feeds report on {p.name}
-          </p>
+          {/* Coverage summary */}
+          <div className="flex flex-wrap items-center gap-4 rounded-xl bg-rr-850 px-5 py-4 text-sm">
+            <span className="text-rr-500">Feed coverage</span>
+            <span className="font-mono">
+              <span className="text-cov-covered">{counts.covered} covered</span>
+              <span className="text-rr-500"> · </span>
+              <span className="text-cov-partial">{counts.partial} partial</span>
+              <span className="text-rr-500"> · {counts.total - counts.covered - counts.partial} not yet covered</span>
+              <span className="text-rr-500"> of {counts.total}</span>
+            </span>
+          </div>
+
+          {/* How feeds see it — methodology-lens spread (neutral, fact-only) */}
+          <div className="mt-6 rounded-xl bg-rr-850 p-5">
+            <h3 className="mb-3 section-title text-rr-500">How feeds see it</h3>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {LENS_TYPES.map((t) => {
+                const v = spread.byType[t];
+                const n = v.covered + v.partial;
+                return (
+                  <div key={t} className={`rounded-lg bg-rr-800 px-4 py-3 ${n === 0 ? "opacity-40" : ""}`}>
+                    <div className="eyebrow text-rr-500">{t}</div>
+                    <div className="mt-0.5 font-mono text-sm">
+                      {n === 0 ? (
+                        <span className="text-rr-500">—</span>
+                      ) : (
+                        <>
+                          <span className="text-cov-covered">{v.covered}</span>
+                          <span className="text-rr-500"> / </span>
+                          <span className="text-cov-partial">{v.partial}</span>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <p className="mt-3 text-sm leading-relaxed text-rr-500">
+              {spread.reporting === 0 ? (
+                <>No feed in the registry reports on {p.name} yet.</>
+              ) : (
+                <>
+                  Seen through <span className="text-rr-200">{spread.lensCount} of 4</span> methodology lenses
+                  ({spread.lenses.join(", ").toLowerCase()}).{" "}
+                  A neutral view of who is looking and how — not a risk judgement.
+                </>
+              )}
+            </p>
+          </div>
+
           {divergence.split && (
-            <div className="mb-4 rounded-lg bg-rr-800 px-5 py-4">
+            <div className="mt-6 rounded-lg bg-rr-800 px-5 py-4">
               <div className="flex items-center gap-2 text-sm font-medium">
                 <TrendingUpDown className="h-4 w-4 text-rr-400" /> Where feeds differ
               </div>
@@ -211,7 +192,7 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
               </p>
             </div>
           )}
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {feeds.map((f) => {
               const c = COVERAGE[p.id][f.id];
               const meta = FEED_BY_ID[f.id];
