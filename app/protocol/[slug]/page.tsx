@@ -50,76 +50,6 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
       content: <AiCard ai={ai} protocolName={p.name} />,
     },
     {
-      id: "governance",
-      label: "Governance",
-      content: (
-        <>
-          {/* Governance at a glance — structured control-surface summary (neutral facts). */}
-          {p.controls && <GovernanceGlance controls={p.controls} />}
-
-          {/* Governance — the authoritative, provenance-tagged prose facts. */}
-          <section>
-            <div className="overflow-hidden rounded-xl bg-rr-850">
-              <table className="w-full text-sm">
-                <tbody>
-                  {p.governance.map((g, i) => (
-                    <tr key={i} className="border-b border-rr-700 last:border-0">
-                      <td className="w-44 bg-rr-800 px-4 py-3 align-top text-rr-500">{g.label}</td>
-                      <td className="px-4 py-3">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span>{g.value}</span>
-                          <ProvenanceTag provenance={g.provenance} />
-                          {g.source && (
-                            <a href={g.source} className="text-blue-400 hover:underline" target="_blank" rel="noreferrer">
-                              <ExternalLink className="inline h-3 w-3" />
-                            </a>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </section>
-
-          {/* Control timeline — the verifier edge: control actions from chain truth (Sieve). */}
-          {timeline.length > 0 && (
-            <section className="mt-8">
-              <h2 className="mb-1 section-title text-rr-500">Control timeline</h2>
-              <p className="mb-3 max-w-2xl text-sm leading-relaxed text-rr-500">
-                Every upgrade, parameter change, and key rotation over {p.name}&rsquo;s contracts,
-                rendered from chain state via Sieve. The feeds <em>rate</em> control; the verification
-                layer <em>proves</em> it. Each action links to its transaction; an immutable protocol
-                shows an empty timeline, which is itself the signal.
-              </p>
-              <div className="overflow-hidden rounded-xl bg-rr-850">
-                <ol>
-                  {timeline.map((a, i) => (
-                    <li key={i} className="flex gap-4 border-b border-rr-700 px-4 py-3 last:border-0">
-                      <span className="w-24 shrink-0 font-mono text-xs text-rr-500">{a.date}</span>
-                      <span className="min-w-0">
-                        <span className="flex flex-wrap items-center gap-2">
-                          <span className="text-sm font-medium">{a.action}</span>
-                          <ProvenanceTag provenance={a.provenance} />
-                          {a.txUrl && (
-                            <a href={a.txUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
-                              <ExternalLink className="inline h-3 w-3" />
-                            </a>
-                          )}
-                        </span>
-                        <span className="mt-0.5 block text-sm leading-relaxed text-rr-500">{a.detail}</span>
-                      </span>
-                    </li>
-                  ))}
-                </ol>
-              </div>
-            </section>
-          )}
-        </>
-      ),
-    },
-    {
       id: "feeds",
       label: "Feeds",
       content: (
@@ -231,6 +161,76 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
             })}
           </div>
         </section>
+      ),
+    },
+    {
+      id: "governance",
+      label: "Governance",
+      content: (
+        <>
+          {/* Governance at a glance — structured control-surface summary (neutral facts). */}
+          {p.controls && <GovernanceGlance controls={p.controls} />}
+
+          {/* Governance — the authoritative, provenance-tagged prose facts. */}
+          <section>
+            <div className="overflow-hidden rounded-xl bg-rr-850">
+              <table className="w-full text-sm">
+                <tbody>
+                  {p.governance.map((g, i) => (
+                    <tr key={i} className="border-b border-rr-700 last:border-0">
+                      <td className="w-44 bg-rr-800 px-4 py-3 align-top text-rr-500">{g.label}</td>
+                      <td className="px-4 py-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span>{g.value}</span>
+                          <ProvenanceTag provenance={g.provenance} />
+                          {g.source && (
+                            <a href={g.source} className="text-blue-400 hover:underline" target="_blank" rel="noreferrer">
+                              <ExternalLink className="inline h-3 w-3" />
+                            </a>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          {/* Control timeline — the verifier edge: control actions from chain truth (Sieve). */}
+          {timeline.length > 0 && (
+            <section className="mt-8">
+              <h2 className="mb-1 section-title text-rr-500">Control timeline</h2>
+              <p className="mb-3 max-w-2xl text-sm leading-relaxed text-rr-500">
+                Every upgrade, parameter change, and key rotation over {p.name}&rsquo;s contracts,
+                rendered from chain state via Sieve. The feeds <em>rate</em> control; the verification
+                layer <em>proves</em> it. Each action links to its transaction; an immutable protocol
+                shows an empty timeline, which is itself the signal.
+              </p>
+              <div className="overflow-hidden rounded-xl bg-rr-850">
+                <ol>
+                  {timeline.map((a, i) => (
+                    <li key={i} className="flex gap-4 border-b border-rr-700 px-4 py-3 last:border-0">
+                      <span className="w-24 shrink-0 font-mono text-xs text-rr-500">{a.date}</span>
+                      <span className="min-w-0">
+                        <span className="flex flex-wrap items-center gap-2">
+                          <span className="text-sm font-medium">{a.action}</span>
+                          <ProvenanceTag provenance={a.provenance} />
+                          {a.txUrl && (
+                            <a href={a.txUrl} target="_blank" rel="noreferrer" className="text-blue-400 hover:underline">
+                              <ExternalLink className="inline h-3 w-3" />
+                            </a>
+                          )}
+                        </span>
+                        <span className="mt-0.5 block text-sm leading-relaxed text-rr-500">{a.detail}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </section>
+          )}
+        </>
       ),
     },
   ];
