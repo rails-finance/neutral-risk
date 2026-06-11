@@ -332,34 +332,10 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
     });
   }
 
-  if (p.links.railsExplorer) {
-    tabs.push({
-      id: "verify",
-      label: "Verify on-chain",
-      content: (
-        /* Verify on-chain — the verification layer (Rails as steward/verifier, not a rated feed) */
-        <section>
-          <div className="flex flex-wrap items-center justify-between gap-4 rounded-xl border border-blue-500/20 bg-blue-500/5 px-5 py-4">
-            <p className="max-w-2xl text-sm leading-relaxed text-rr-200">
-              The feeds above tell you what they <em>say</em>. To check what actually
-              happened, every {p.name} position and interaction is inspectable on-chain. This
-              registry&apos;s verification layer — <span className="font-medium text-rr-50">Rails</span> —
-              renders the full, event-level transaction history, so any claim here can be
-              checked against chain truth.
-            </p>
-            <a
-              href={p.links.railsExplorer}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex shrink-0 items-center gap-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-400"
-            >
-              Verify {p.name} on-chain <ArrowUpRight className="h-4 w-4" />
-            </a>
-          </div>
-        </section>
-      ),
-    });
-  }
+  // On-chain verification is provided neutrally through the Governance tab: facts carry `on-chain`
+  // provenance tags linked to their source (Etherscan, registries), and the control timeline is
+  // built from chain state. The registry deliberately runs no steward-branded "verify" call-out
+  // (CHARTER.md: the steward does not self-promote inside the neutral public good).
 
   return (
     <div>

@@ -103,11 +103,10 @@ export interface Protocol {
   // controlTimeline now lives in data/control-timeline.json (rendered from Sieve); see
   // lib/control-timeline.ts. The ControlAction type above remains the snapshot's row shape.
   incidents?: Incident[];
-  links: { defillama: string; site?: string; railsExplorer?: string };
+  links: { defillama: string; site?: string };
 }
 
 const llama = (slug: string) => `https://defillama.com/protocol/${slug}`;
-const rails = (p: string) => `https://rails-explorer.vercel.app/activity?protocol=${p}`;
 
 export const PROTOCOLS: Protocol[] = [
   {
@@ -137,7 +136,7 @@ export const PROTOCOLS: Protocol[] = [
         assetId: "rseth",
       },
     ],
-    links: { defillama: llama("sparklend"), site: "https://spark.fi", railsExplorer: rails("spark") },
+    links: { defillama: llama("sparklend"), site: "https://spark.fi" },
   },
   {
     id: "aave-v3",
@@ -173,7 +172,7 @@ export const PROTOCOLS: Protocol[] = [
         source: "https://thedefiant.io/news/defi/crv-trade-aave-bad-debt",
       },
     ],
-    links: { defillama: llama("aave-v3"), site: "https://aave.com", railsExplorer: rails("aave-v3") },
+    links: { defillama: llama("aave-v3"), site: "https://aave.com" },
   },
   {
     id: "aave-v4",
@@ -190,7 +189,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Upgradeability", value: "Upgradeable; governance-controlled (new V4 contracts)", provenance: "sample" },
       { label: "Status", value: "Launched Mar 2026 with conservative initial markets", provenance: "verified" },
     ],
-    links: { defillama: llama("aave-v4"), site: "https://aave.com", railsExplorer: rails("aave-v4") },
+    links: { defillama: llama("aave-v4"), site: "https://aave.com" },
   },
   {
     id: "morpho",
@@ -219,7 +218,7 @@ export const PROTOCOLS: Protocol[] = [
         assetId: "rseth",
       },
     ],
-    links: { defillama: llama("morpho-blue"), site: "https://morpho.org", railsExplorer: rails("morpho") },
+    links: { defillama: llama("morpho-blue"), site: "https://morpho.org" },
   },
   {
     id: "fluid",
@@ -273,7 +272,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Admin control", value: "Technical multisig (0xA7D5…f1D5) queues proposals; veto-admin multisig can block", provenance: "onchain", source: "https://etherscan.io/address/0xA7D5DDc1b8557914F158076b228AA91eF613f1D5" },
       { label: "Timelock", value: "Timelock (0xa133…f23b): 2-day delay; permissionless execution after delay", provenance: "onchain", source: "https://etherscan.io/address/0xa133C9A92Fb8dDB962Af1cbae58b2723A0bdf23b" },
     ],
-    links: { defillama: llama("gearbox"), site: "https://gearbox.fi", railsExplorer: rails("gearbox-v3") },
+    links: { defillama: llama("gearbox"), site: "https://gearbox.fi" },
   },
   {
     id: "euler",
@@ -300,7 +299,7 @@ export const PROTOCOLS: Protocol[] = [
         source: "https://www.chainalysis.com/blog/euler-finance-flash-loan-attack/",
       },
     ],
-    links: { defillama: llama("euler-v2"), site: "https://euler.finance", railsExplorer: rails("euler-v2") },
+    links: { defillama: llama("euler-v2"), site: "https://euler.finance" },
   },
   {
     id: "compound-v3",
@@ -317,7 +316,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Timelock", value: "Governance Timelock", provenance: "onchain" },
       { label: "Guardian", value: "Pause guardian multisig", provenance: "verified" },
     ],
-    links: { defillama: llama("compound-v3"), site: "https://compound.finance", railsExplorer: rails("compound-v3") },
+    links: { defillama: llama("compound-v3"), site: "https://compound.finance" },
   },
   {
     id: "compound-v2",
@@ -361,7 +360,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Upgradeability", value: "None (contracts are fixed at deploy)", provenance: "verified" },
       { label: "Admin control", value: "No privileged owner over user funds", provenance: "verified" },
     ],
-    links: { defillama: llama("liquity-v1"), site: "https://liquity.org", railsExplorer: rails("liquity-v1") },
+    links: { defillama: llama("liquity-v1"), site: "https://liquity.org" },
   },
   {
     id: "liquity-v2",
@@ -378,7 +377,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Upgradeability", value: "None for core (contracts fixed at deploy)", provenance: "verified" },
       { label: "Admin control", value: "No privileged owner over user funds", provenance: "verified" },
     ],
-    links: { defillama: llama("liquity-v2"), site: "https://liquity.org", railsExplorer: rails("liquity-v2") },
+    links: { defillama: llama("liquity-v2"), site: "https://liquity.org" },
   },
   {
     id: "uniswap-v3",
@@ -394,7 +393,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Core", value: "v3 core contracts non-upgradeable", provenance: "verified" },
       { label: "Admin control", value: "Governance can set protocol fee switch only", provenance: "verified" },
     ],
-    links: { defillama: llama("uniswap-v3"), site: "https://uniswap.org", railsExplorer: rails("uniswap-v3") },
+    links: { defillama: llama("uniswap-v3"), site: "https://uniswap.org" },
   },
   {
     id: "uniswap-v4",
@@ -452,7 +451,7 @@ export const PROTOCOLS: Protocol[] = [
         source: "https://hackmd.io/@LlamaRisk/BJzSKHNjn",
       },
     ],
-    links: { defillama: llama("curve-dex"), site: "https://curve.fi", railsExplorer: rails("curve") },
+    links: { defillama: llama("curve-dex"), site: "https://curve.fi" },
   },
   {
     id: "balancer-v2",
@@ -487,7 +486,7 @@ export const PROTOCOLS: Protocol[] = [
         source: "https://decrypt.co/154002/balancer-suffers-nearly-1m-exploit-team-urges-users-withdraw-funds",
       },
     ],
-    links: { defillama: llama("balancer-v2"), site: "https://balancer.fi", railsExplorer: rails("balancer-v2") },
+    links: { defillama: llama("balancer-v2"), site: "https://balancer.fi" },
   },
   {
     id: "balancer-v3",
@@ -504,7 +503,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Admin control", value: "DAO multisig governs Vault permissions via the Authorizer", provenance: "verified" },
       { label: "Architecture", value: "Re-architected Vault with a simplified custom-pool model", provenance: "verified", source: "https://github.com/balancer/balancer-v3-monorepo" },
     ],
-    links: { defillama: llama("balancer-v3"), site: "https://balancer.fi", railsExplorer: rails("balancer-v3") },
+    links: { defillama: llama("balancer-v3"), site: "https://balancer.fi" },
   },
   {
     id: "cow-swap",
@@ -602,7 +601,7 @@ export const PROTOCOLS: Protocol[] = [
         source: "https://www.coindesk.com/business/2023/04/13/defi-protocols-aave-yearn-finance-likely-impacted-in-exploit-peckshield",
       },
     ],
-    links: { defillama: llama("yearn-finance"), site: "https://yearn.fi", railsExplorer: rails("yearn") },
+    links: { defillama: llama("yearn-finance"), site: "https://yearn.fi" },
   },
   {
     id: "mellow",
@@ -637,7 +636,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Curators", value: "Curator raises caps under timelock, lowers instantly; allocators reallocate between enabled markets", provenance: "verified", source: "https://docs.morpho.org/morpho-vaults/concepts/roles/" },
       { label: "Timelock", value: "Per-vault timelock, min 24h, on cap increases / new markets / guardian changes; guardian can revoke pending actions", provenance: "verified", source: "https://docs.morpho.org/curate/concepts/timelock/" },
     ],
-    links: { defillama: llama("morpho-blue"), site: "https://app.morpho.org/vaults", railsExplorer: rails("morpho") },
+    links: { defillama: llama("morpho-blue"), site: "https://app.morpho.org/vaults" },
   },
   {
     id: "pendle",
@@ -654,7 +653,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Markets", value: "Permissionless PT/YT market creation on-chain (UI listing curated)", provenance: "verified", source: "https://www.defiscan.info/protocols/pendle/ethereum" },
       { label: "Timelock / Guardian", value: "Only PENDLE-token params have a 7-day timelock; other actions instant. Guardian can pause SY tokens", provenance: "verified", source: "https://www.defiscan.info/protocols/pendle/ethereum" },
     ],
-    links: { defillama: llama("pendle"), site: "https://pendle.finance", railsExplorer: rails("pendle") },
+    links: { defillama: llama("pendle"), site: "https://pendle.finance" },
   },
   {
     id: "lido",
@@ -671,7 +670,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Admin control", value: "Easy Track + emergency multisig (GateSeal)", provenance: "verified" },
       { label: "Operators", value: "Curated + community node-operator sets", provenance: "verified" },
     ],
-    links: { defillama: llama("lido"), site: "https://lido.fi", railsExplorer: rails("lido") },
+    links: { defillama: llama("lido"), site: "https://lido.fi" },
   },
   {
     id: "rocket-pool",
@@ -688,7 +687,7 @@ export const PROTOCOLS: Protocol[] = [
       { label: "Operators", value: "Permissionless node operators (RPL bond)", provenance: "onchain" },
       { label: "Admin control", value: "RocketStorage guardian role (historically a team EOA); Security Council (RPIP-33) elected by pDAO can veto", provenance: "verified", source: "https://dao.rocketpool.net/t/protocol-dao-security-council/3050" },
     ],
-    links: { defillama: llama("rocket-pool"), site: "https://rocketpool.net", railsExplorer: rails("rocketpool") },
+    links: { defillama: llama("rocket-pool"), site: "https://rocketpool.net" },
   },
 ];
 
