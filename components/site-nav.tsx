@@ -136,22 +136,29 @@ export function SiteNav() {
     setOpen(false);
   }, [pathname]);
 
-  // Close on Escape, and (desktop) on an outside click.
+  // Close on Escape, and (desktop) on an outside click. The outside-click handler is desktop-only:
+  // the mobile sheet is portaled to <body> (outside rootRef), so a `mousedown` on one of its links
+  // would read as "outside", close the menu, and unmount the portal before the link's `click` can
+  // land — the tap would dismiss the nav without navigating. The mobile sheet has its own overlay
+  // button for dismissal, so it doesn't need this listener.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
     };
+    document.addEventListener("keydown", onKey);
+    if (isMobile) {
+      return () => document.removeEventListener("keydown", onKey);
+    }
     const onDown = (e: MouseEvent) => {
       if (rootRef.current && !rootRef.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener("keydown", onKey);
     document.addEventListener("mousedown", onDown);
     return () => {
       document.removeEventListener("keydown", onKey);
       document.removeEventListener("mousedown", onDown);
     };
-  }, [open]);
+  }, [open, isMobile]);
 
   // Lock body scroll while the mobile sheet is open.
   useEffect(() => {
