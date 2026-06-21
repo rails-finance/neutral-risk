@@ -5,6 +5,8 @@ import { PROTOCOLS, PROTOCOL_BY_ID } from "@/lib/data/protocols";
 import { COVERAGE } from "@/lib/data/coverage";
 import { CoveragePill } from "@/components/coverage-cell";
 import { IndependenceBadge } from "@/components/independence-badge";
+import { ExportMenu } from "@/components/export-menu";
+import { feedToMarkdown } from "@/lib/export/feed-to-markdown";
 
 export function generateStaticParams() {
   return FEEDS.map((f) => ({ slug: f.id }));
@@ -29,9 +31,12 @@ export default async function FeedPage({ params }: { params: Promise<{ slug: str
 
   return (
     <div>
-      <Link href="/feeds" className="mb-5 inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
-        ← Feed directory
-      </Link>
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <Link href="/feeds" className="inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
+          ← Feed directory
+        </Link>
+        <ExportMenu markdown={feedToMarkdown(f)} ariaLabel={`Copy ${f.name} profile for an LLM`} />
+      </div>
 
       {/* Page title spans its own row above both columns. */}
       <h1 className="text-4xl font-bold tracking-tight">{f.name}</h1>

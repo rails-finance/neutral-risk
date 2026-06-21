@@ -15,6 +15,8 @@ import { CoveragePill } from "@/components/coverage-cell";
 import { AiCard } from "@/components/ai-card";
 import { GovernanceGlance } from "@/components/governance-glance";
 import { ProtocolTabs, type ProtocolTab } from "@/components/protocol-tabs";
+import { ExportMenu } from "@/components/export-menu";
+import { protocolToMarkdown } from "@/lib/export/protocol-to-markdown";
 
 export function generateStaticParams() {
   return PROTOCOLS.map((p) => ({ slug: p.id }));
@@ -320,9 +322,15 @@ export default async function ProtocolPage({ params }: { params: Promise<{ slug:
 
   return (
     <div>
-      <Link href="/coverage" className="mb-5 inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
-        ← All protocols
-      </Link>
+      <div className="mb-5 flex items-center justify-between gap-3">
+        <Link href="/coverage" className="inline-flex items-center gap-1 text-xs text-rr-500 hover:text-rr-50">
+          ← All protocols
+        </Link>
+        <ExportMenu
+          markdown={protocolToMarkdown(p)}
+          ariaLabel={`Copy ${p.name} aggregation for an LLM`}
+        />
+      </div>
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-4">
